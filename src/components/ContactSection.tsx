@@ -44,18 +44,29 @@ const ContactSection = () => {
     setIsSubmitting(true);
     
     try {
-      // Create mailto link with form data
+      // Create mailto links
+      // 1. Main contact email to portfolio owner
       const subject = `Portfolio Contact from ${values.name}`;
       const body = `Name: ${values.name}\nEmail: ${values.email}\n\nMessage:\n${values.message}`;
       const mailtoLink = `mailto:${contactEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
       
-      // Open email client
-      window.open(mailtoLink, '_blank');
+      // 2. Thank you email to sender
+      const thankYouSubject = `Thank you for contacting Abdullrahman Alghanim`;
+      const thankYouBody = `Dear ${values.name},\n\nThank you for reaching out! I've received your message and will get back to you as soon as possible.\n\nBest regards,\nAbdullrahman Alghanim`;
+      const thankYouMailtoLink = `mailto:${values.email}?subject=${encodeURIComponent(thankYouSubject)}&body=${encodeURIComponent(thankYouBody)}`;
+      
+      // First open the thank you email
+      window.open(thankYouMailtoLink, '_blank');
+      
+      // Then open the main contact email
+      setTimeout(() => {
+        window.open(mailtoLink, '_blank');
+      }, 500);
       
       // Show success message
       toast({
-        title: "Message ready to send!",
-        description: "Your default email client has been opened with your message.",
+        title: "Messages ready to send!",
+        description: "Your email client has been opened with both messages.",
         duration: 5000,
       });
       
@@ -188,7 +199,7 @@ const ContactSection = () => {
                         className="w-full bg-accent text-accent-foreground hover:bg-accent/90"
                         disabled={isSubmitting}
                       >
-                        {isSubmitting ? "Preparing Email..." : "Send Message"}
+                        {isSubmitting ? "Preparing Emails..." : "Send Message"}
                       </Button>
                     </form>
                   </Form>
