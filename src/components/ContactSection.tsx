@@ -1,4 +1,3 @@
-
 import { Github, Linkedin, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -17,6 +16,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
+import { sendContactEmail, sendThankYouEmail } from "@/services/emailService";
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -40,41 +40,39 @@ const ContactSection = () => {
     }
   });
 
-  const onSubmit = (values: FormValues) => {
+  const onSubmit = async (values: FormValues) => {
     setIsSubmitting(true);
     
     try {
-      // Create mailto links
-      // 1. Main contact email to portfolio owner
-      const subject = `Portfolio Contact from ${values.name}`;
-      const body = `Name: ${values.name}\nEmail: ${values.email}\n\nMessage:\n${values.message}`;
-      const mailtoLink = `mailto:${contactEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-      
-      // 2. Thank you email to sender
-      const thankYouSubject = `Thank you for contacting Abdullrahman Alghanim`;
-      const thankYouBody = `Dear ${values.name},\n\nThank you for reaching out! I've received your message and will get back to you as soon as possible.\n\nBest regards,\nAbdullrahman Alghanim`;
-      const thankYouMailtoLink = `mailto:${values.email}?subject=${encodeURIComponent(thankYouSubject)}&body=${encodeURIComponent(thankYouBody)}`;
-      
-      // First open the thank you email
-      window.open(thankYouMailtoLink, '_blank');
-      
-      // Then open the main contact email
-      setTimeout(() => {
-        window.open(mailtoLink, '_blank');
-      }, 500);
-      
-      // Show success message
-      toast({
-        title: "Messages ready to send!",
-        description: "Your email client has been opened with both messages.",
-        duration: 5000,
+      // Send contact notification to the portfolio owner
+      const contactSent = await sendContactEmail({
+        name: values.name,
+        email: values.email,
+        message: values.message
       });
       
-      form.reset();
+      // Send thank you email to the sender
+      const thankYouSent = await sendThankYouEmail({
+        name: values.name,
+        email: values.email,
+        message: values.message
+      });
+      
+      if (contactSent && thankYouSent) {
+        toast({
+          title: "Messages sent successfully!",
+          description: "Thank you for your message. I'll get back to you soon.",
+          duration: 5000,
+        });
+        
+        form.reset();
+      } else {
+        throw new Error("Failed to send one or more emails");
+      }
     } catch (error) {
       toast({
         title: "Something went wrong",
-        description: "Please try again or email directly.",
+        description: "Please try again or email directly to " + contactEmail,
         variant: "destructive",
         duration: 5000,
       });
@@ -199,7 +197,7 @@ const ContactSection = () => {
                         className="w-full bg-accent text-accent-foreground hover:bg-accent/90"
                         disabled={isSubmitting}
                       >
-                        {isSubmitting ? "Preparing Emails..." : "Send Message"}
+                        {isSubmitting ? "Sending..." : "Send Message"}
                       </Button>
                     </form>
                   </Form>
