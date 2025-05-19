@@ -29,6 +29,7 @@ type FormValues = z.infer<typeof formSchema>;
 const ContactSection = () => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const contactEmail = "abdulalghanim476@gmail.com";
   
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -42,19 +43,34 @@ const ContactSection = () => {
   const onSubmit = (values: FormValues) => {
     setIsSubmitting(true);
     
-    // Simulate form submission
-    setTimeout(() => {
-      console.log("Form values:", values);
-      setIsSubmitting(false);
+    try {
+      // Create mailto link with form data
+      const subject = `Portfolio Contact from ${values.name}`;
+      const body = `Name: ${values.name}\nEmail: ${values.email}\n\nMessage:\n${values.message}`;
+      const mailtoLink = `mailto:${contactEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
       
+      // Open email client
+      window.open(mailtoLink, '_blank');
+      
+      // Show success message
       toast({
-        title: "Message sent!",
-        description: "Thank you for reaching out. I'll get back to you soon.",
+        title: "Message ready to send!",
+        description: "Your default email client has been opened with your message.",
         duration: 5000,
       });
       
       form.reset();
-    }, 1500);
+    } catch (error) {
+      toast({
+        title: "Something went wrong",
+        description: "Please try again or email directly.",
+        variant: "destructive",
+        duration: 5000,
+      });
+      console.error("Contact form error:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -82,13 +98,13 @@ const ContactSection = () => {
                   
                   <div className="space-y-4">
                     <a 
-                      href="mailto:contact@example.com" 
+                      href={`mailto:${contactEmail}`}
                       className="flex items-center gap-3 text-muted-foreground hover:text-foreground transition-colors"
                     >
                       <div className="h-10 w-10 rounded-lg bg-muted flex items-center justify-center">
                         <Mail className="h-5 w-5 text-primary" />
                       </div>
-                      <span>contact@example.com</span>
+                      <span>{contactEmail}</span>
                     </a>
                     
                     <a 
@@ -172,7 +188,7 @@ const ContactSection = () => {
                         className="w-full bg-accent text-accent-foreground hover:bg-accent/90"
                         disabled={isSubmitting}
                       >
-                        {isSubmitting ? "Sending..." : "Send Message"}
+                        {isSubmitting ? "Preparing Email..." : "Send Message"}
                       </Button>
                     </form>
                   </Form>
