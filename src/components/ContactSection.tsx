@@ -2,8 +2,61 @@
 import { Github, Linkedin, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
+import { 
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage
+} from "@/components/ui/form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+
+const formSchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters"),
+  email: z.string().email("Please enter a valid email address"),
+  message: z.string().min(10, "Message must be at least 10 characters")
+});
+
+type FormValues = z.infer<typeof formSchema>;
 
 const ContactSection = () => {
+  const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  const form = useForm<FormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      message: ""
+    }
+  });
+
+  const onSubmit = (values: FormValues) => {
+    setIsSubmitting(true);
+    
+    // Simulate form submission
+    setTimeout(() => {
+      console.log("Form values:", values);
+      setIsSubmitting(false);
+      
+      toast({
+        title: "Message sent!",
+        description: "Thank you for reaching out. I'll get back to you soon.",
+        duration: 5000,
+      });
+      
+      form.reset();
+    }, 1500);
+  };
+
   return (
     <section id="contact" className="py-20 relative overflow-hidden">
       <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-secondary/5 rounded-full blur-3xl"></div>
@@ -65,26 +118,64 @@ const ContactSection = () => {
                 </div>
                 
                 <div className="space-y-6">
-                  <h3 className="text-xl font-medium">Let's Connect</h3>
-                  <p className="text-muted-foreground">
-                    Interested in my work or have a project in mind? 
-                    Don't hesitate to reach out.
-                  </p>
-                  
-                  <div className="flex flex-col gap-4">
-                    <Button asChild size="lg" className="bg-accent-gradient animate-gradient-shift w-full">
-                      <a href="mailto:contact@example.com">
-                        <Mail className="mr-2" size={18} />
-                        Send Email
-                      </a>
-                    </Button>
-                    
-                    <Button asChild variant="outline" size="lg" className="w-full">
-                      <a href="resume.pdf" target="_blank" rel="noopener noreferrer">
-                        Download Resume
-                      </a>
-                    </Button>
-                  </div>
+                  <h3 className="text-xl font-medium">Send Me a Message</h3>
+                  <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                      <FormField
+                        control={form.control}
+                        name="name"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Name</FormLabel>
+                            <FormControl>
+                              <Input placeholder="Your name" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <FormField
+                        control={form.control}
+                        name="email"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Email</FormLabel>
+                            <FormControl>
+                              <Input placeholder="Your email" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <FormField
+                        control={form.control}
+                        name="message"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Message</FormLabel>
+                            <FormControl>
+                              <Textarea 
+                                placeholder="Your message" 
+                                className="min-h-[120px] resize-none" 
+                                {...field} 
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <Button 
+                        type="submit" 
+                        className="w-full bg-accent text-accent-foreground hover:bg-accent/90"
+                        disabled={isSubmitting}
+                      >
+                        {isSubmitting ? "Sending..." : "Send Message"}
+                      </Button>
+                    </form>
+                  </Form>
                 </div>
               </div>
             </CardContent>
