@@ -1,0 +1,15 @@
+
+# Netlify configuration file
+
+# Headers to ensure documents can be downloaded
+[[headers]]
+  for = "/documents/*"
+  [headers.values]
+    Content-Disposition = "attachment"
+    Access-Control-Allow-Origin = "*"
+
+# Handle redirects for SPA
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

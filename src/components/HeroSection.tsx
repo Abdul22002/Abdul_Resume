@@ -30,7 +30,7 @@ const HeroSection = () => {
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up" style={{ animationDelay: "0.3s" }}>
             <Button asChild size="lg" className="bg-accent-gradient animate-gradient-shift">
-              <a href="Abdul_jobresume_CyberSecurity_NEW.pdf" target="_blank" rel="noopener noreferrer">
+              <a href="/documents/Abdul_jobresume_CyberSecurity_NEW.pdf" target="_blank" rel="noopener noreferrer">
                 <FileText className="mr-2" size={18} />
                 View Resume
               </a>
@@ -46,7 +46,7 @@ const HeroSection = () => {
       </div>
       
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-        <a href="#documents" className="text-muted-foreground hover:text-foreground transition-colors">
+        <a href="#documents" className="text-muted-foreground hover:text-foreground transition-colors duration-300">
           <svg 
             xmlns="http://www.w3.org/2000/svg" 
             width="24" 
