@@ -1,3 +1,4 @@
 
-# Redirects file for Netlify
+# Redirects for Netlify
+/documents/*  /documents/:splat  200
 /*  /index.html  200

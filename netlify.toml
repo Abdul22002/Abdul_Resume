@@ -6,7 +6,7 @@
   for = "/documents/*"
   [headers.values]
     Content-Type = "application/octet-stream"
-    Content-Disposition = "attachment"
+    Content-Disposition = "attachment; filename=document.docx"
     Access-Control-Allow-Origin = "*"
 
 # Handle redirects for SPA

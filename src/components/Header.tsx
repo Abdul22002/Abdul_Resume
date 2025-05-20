@@ -34,7 +34,7 @@ const Header = () => {
             <span className="sr-only">LinkedIn</span>
           </a>
           <Button asChild variant="outline" size="sm" className="hidden md:flex">
-            <a href="/documents/Abdul_jobresume_CyberSecurity_NEW.pdf" target="_blank" rel="noopener noreferrer" download>
+            <a href="/documents/Abdul_jobresume_CyberSecurity_NEW.pdf" download="Abdul_Alghanim_Resume.pdf">
               <FileText size={16} className="mr-2" />
               Resume
             </a>

@@ -13,7 +13,7 @@ const Index = () => {
   useEffect(() => {
     toast({
       title: "Welcome to my portfolio!",
-      description: "Feel free to explore my documents and get in touch.",
+      description: "All documents are now downloadable. Click on any document card to download.",
       duration: 5000,
     });
   }, []);

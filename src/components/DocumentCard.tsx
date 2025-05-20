@@ -8,11 +8,12 @@ interface DocumentCardProps {
 }
 
 const DocumentCard = ({ title, fileName }: DocumentCardProps) => {
+  // Extract file extension for display
+  const fileExtension = fileName.split('.').pop()?.toLowerCase() || '';
+  
   return (
     <a 
       href={fileName} 
-      target="_blank" 
-      rel="noopener noreferrer" 
       className="block group"
       download
     >
@@ -22,7 +23,7 @@ const DocumentCard = ({ title, fileName }: DocumentCardProps) => {
             <FileText className="h-5 w-5 text-primary group-hover:text-accent transition-colors" />
           </div>
           <div className="hidden sm:flex px-3 py-1 bg-muted/30 rounded-full text-xs text-muted-foreground group-hover:bg-accent/10 group-hover:text-accent transition-colors">
-            .docx
+            .{fileExtension}
           </div>
         </div>
         

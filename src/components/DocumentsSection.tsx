@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { motion } from "framer-motion";
 import DocumentCard from "./DocumentCard";
@@ -67,7 +68,7 @@ const documents = [
     id: 11,
     title: "Proxmox Server Configuration",
     fileName: "/documents/Configuration of proxmox Server.docx",
-    category: "hardening",
+    category: "infrastructure",
   },
 ];
 
@@ -77,6 +78,7 @@ const categories = [
   { id: "analysis", name: "Analysis" },
   { id: "forensics", name: "Forensics & Logging" },
   { id: "security", name: "Security" },
+  { id: "infrastructure", name: "Infrastructure" },
 ];
 
 const DocumentsSection = () => {
@@ -97,7 +99,7 @@ const DocumentsSection = () => {
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold mb-4">Technical Documents</h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Browse through my collection of technical documents showcasing my expertise in various cybersecurity domains
+            Browse through my collection of technical documents showcasing my expertise in various cybersecurity and infrastructure domains
           </p>
         </div>
         
