@@ -14,6 +14,7 @@ const DocumentCard = ({ title, fileName }: DocumentCardProps) => {
       target="_blank" 
       rel="noopener noreferrer" 
       className="block group"
+      download
     >
       <Card className="h-full bg-card-gradient card-hover overflow-hidden border border-border/50 p-5 flex flex-col">
         <div className="flex items-start justify-between">
@@ -33,7 +34,7 @@ const DocumentCard = ({ title, fileName }: DocumentCardProps) => {
         
         <div className="mt-4 pt-4 border-t border-border/30">
           <div className="flex justify-between items-center">
-            <span className="text-sm text-muted-foreground">View Document</span>
+            <span className="text-sm text-muted-foreground">Download Document</span>
             <svg 
               xmlns="http://www.w3.org/2000/svg" 
               width="16" 

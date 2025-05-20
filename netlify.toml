@@ -1,10 +1,11 @@
 
 # Netlify configuration file
 
-# Headers to ensure documents can be downloaded
+# Headers to ensure documents can be downloaded correctly
 [[headers]]
   for = "/documents/*"
   [headers.values]
+    Content-Type = "application/octet-stream"
     Content-Disposition = "attachment"
     Access-Control-Allow-Origin = "*"
 
